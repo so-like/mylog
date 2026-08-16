@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* --- 设计系统变量定义 --- */
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  
+  /* 明亮模式配色 */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+  --accent-glow: rgba(79, 70, 229, 0.15);
+  --border-color: rgba(226, 232, 240, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(226, 232, 240, 0.6);
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --modal-overlay: rgba(15, 23, 42, 0.3);
+  
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.2s ease;
+}
+
+[data-theme="dark"] {
+  /* 暗黑模式配色 */
+  --bg-primary: #090d16;
+  --bg-secondary: #111726;
+  --bg-tertiary: #1b2336;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #818cf8;
+  --accent-hover: #6366f1;
+  --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  --accent-glow: rgba(129, 140, 248, 0.25);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(17, 23, 38, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
+}
+
+/* --- 基础重置与重构 --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+/* --- 自定义滚动条 --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 99px;
+  border: 2px solid var(--bg-primary);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* --- 按钮与链接 --- */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+button, input, textarea {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* --- 全局通用样式与组件 --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* 毛玻璃容器 */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+/* 渐变标题 */
+.gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- 动画关键帧 --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(129, 140, 248, 0.4);
+  }
+}
+
+/* 常用动效类 */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* --- 交互动效微调 --- */
+.card-hover {
+  transition: var(--transition-smooth);
+}
+.card-hover:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--card-shadow), var(--accent-glow);
+  border-color: var(--accent);
+}
+
+/* --- Markdown 专属排版样式 (用在阅读模态框) --- */
+.markdown-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.markdown-body h1, 
+.markdown-body h2, 
+.markdown-body h3, 
+.markdown-body h4 {
+  font-family: var(--font-display);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.markdown-body h1 { font-size: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+.markdown-body h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; }
+.markdown-body h3 { font-size: 1.3rem; }
+
+.markdown-body p {
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body ul, 
+.markdown-body ol {
+  margin-left: 2rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body code {
+  background: var(--bg-tertiary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+.markdown-body pre {
+  background: var(--bg-tertiary);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--border-color);
+}
+
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.95em;
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  box-shadow: var(--card-shadow);
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.markdown-body th, 
+.markdown-body td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--bg-tertiary);
+}
